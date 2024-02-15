@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tasks;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class ApiTasksController extends Controller
+class ApiUsersController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $tasks = Tasks::all();
-        return $tasks;
+        $users = User::all();
+        return $users;
     }
 
     /**
@@ -21,7 +21,7 @@ class ApiTasksController extends Controller
      */
     public function create()
     {
-        return 'hola';
+        //
     }
 
     /**
