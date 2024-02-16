@@ -15,7 +15,7 @@ import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 
-export default function OptionsTask() {
+export default function OptionsTask({ setOpen, setOpenEdit, option }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -24,6 +24,12 @@ export default function OptionsTask() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleEdit = () => {
+    option.current=2;
+    setOpenEdit(true);
+    setAnchorEl(null);
+  };
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -76,13 +82,16 @@ export default function OptionsTask() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleEdit}>
           <ListItemIcon>
             <ModeEditIcon fontSize="small" />
           </ListItemIcon>
           Edit
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={()=>{ 
+          setOpen(true);
+          handleClose();
+        }}>
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>

@@ -13,13 +13,13 @@ function UserTasks() {
 
     return (
         <AppTheme>
-        <div className="container mt-5">
+        <div className="container mt-1">
             <div className="row justify-content-center">
-                <div className="col-md-8">
+                <div className="col-md-10">
                     <div className="card text-center">
-                        <div className="card-header"><h2>React-Laravel TODO List </h2></div>
+                        <div className="card-header"><h3>React-Laravel TODO List </h3></div>
                         {/* <div className=""> {` User: ${usr.Id} ${usr.Name} `} </div> */}
-                        <TableTasks/>
+                        <TableTasks currentUser={usr}/>
                     </div>
 
                 </div>

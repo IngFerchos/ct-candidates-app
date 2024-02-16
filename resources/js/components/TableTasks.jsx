@@ -1,5 +1,5 @@
 
-import React,{ useEffect } from 'react';
+import React,{ useEffect, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -27,6 +27,9 @@ import OptionsTask from './OptionsTask';
 import SearchText from './SearchText';
 import Divider from '@mui/material/Divider';
 import Axios from '../../config/axios'
+import AddEditDialog from './AddEditDialog';
+import ConfirmDialog from './ConfirmDialog';
+
 
 function createData(id, title, order, usercreate, userassigned) {
   return {
@@ -95,22 +98,27 @@ const headCells = [
   },
   {
     id: 'order',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Order Description',
   },
   {
     id: 'usercreate',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
-    label: 'UserCreate',
+    label: 'Created By',
   },
   {
     id: 'userassigned',
+    numeric: false,
+    disablePadding: false,
+    label: 'Assigned to',
+  },
+  {
+    id: '',
     numeric: true,
     disablePadding: false,
-    label: 'UserAssigned',
-    
+    label: '',
   },
   
 ];
@@ -126,7 +134,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-          <Checkbox
+          {/* <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -134,12 +142,12 @@ function EnhancedTableHead(props) {
             inputProps={{
               'aria-label': 'select all desserts',
             }}
-          />
-        </TableCell>
+          />  */}
+        </TableCell> 
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.numeric ? 'center' : 'center'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -172,7 +180,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
+  const { numSelected, setOpen, option } = props;
 
   return (
     <Toolbar
@@ -211,7 +219,7 @@ function EnhancedTableToolbar(props) {
 
         <Tooltip title="New Task">
           <IconButton>
-            <NoteAddIcon />
+            <NoteAddIcon onClick={ ()=>{setOpen(true); option.current=1;} } />
           </IconButton>
         </Tooltip>
       
@@ -224,6 +232,10 @@ function EnhancedTableToolbar(props) {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
+
+        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+
       
     </Toolbar>
   );
@@ -233,9 +245,9 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TableTasks() {
+export default function TableTasks({currentUser}) {
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState('id');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -244,44 +256,73 @@ export default function TableTasks() {
   const [rows, setRows] = React.useState([]);
   const [users, setUsers] = React.useState([]);
   const dataUsers = React.useRef([]);
+  const currentTask = React.useRef(null);
+  const option = React.useRef(1);
+  const [open, setOpen] = React.useState(false);
+  const [openConfirmation, setOpenConfirmation] = React.useState(false);
+  const [recharge, setRecharge] = React.useState(false);
 
   useEffect( async () => {
     const { data } = await Axios.get("users",{},{headers: {}});
-    console.log('Data recibida de usuarios', await data);
     setUsers([...data]);
     dataUsers.current=[...data];
   }, [])
 
   useEffect( async () => {
-    let { data } = await Axios.get("tasks",{},{headers: {}});
-    console.log('Data recibida de tareas', await data);
+    let { data } = await Axios.get("tasks");
     setRows([...data.map(x=> ({...x, usercreateId:x.usercreate, usercreate:dataUsers.current?.find(y=>y.id===x.usercreate)?.name, userassignedId:x.userassigned, userassigned:dataUsers.current?.find(y=>y.id===x.userassigned)?.name }) )]);
+    setSelected( data.filter(x=>x.completed===1).map(y=>y.id) );
+    //console.log(data.filter(x=>x.completed===1).map(y=>y.id));
+    setTimeout(() => {
+      let pages;
+      (data.length % rowsPerPage) === 0 ?
+       pages = parseInt(data.length / rowsPerPage)-1:
+       pages = parseInt(data.length / rowsPerPage)
+      handleRequestSort('id'); 
+      setPage(pages);
+    }, 500);
+    
   }, [])
-  
+
+  useEffect( () => {
+    setTimeout(() => {
+      let pages;
+      (rows.length % rowsPerPage) === 0 ?
+       pages = parseInt(rows.length / rowsPerPage)-1:
+       pages = parseInt(rows.length / rowsPerPage)
+      handleRequestSort('id'); 
+      setPage(pages);
+    }, 500);
+    
+  }, [recharge])
+
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
+    
   };
 
-  const handleSelectAllClick = (event) => {
+  /*const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelected = rows.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
-  };
+  };*/
 
-  const handleClick = (event, id, row) => {
+  const handleClick = async (event, id, row) => {
 
     console.log('cliekeoi', event);
     console.log('id', id);
     console.log('row', row);
+    currentTask.current=row;
 
+    //To disabled in the last colum, so that you can press the options delete and modify
     if (event.nativeEvent.srcElement.cellIndex>4) return;
     if (event.nativeEvent.srcElement.cellIndex===undefined && event.nativeEvent.target.checked===undefined) return;
-
 
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
@@ -299,6 +340,21 @@ export default function TableTasks() {
       );
     }
     setSelected(newSelected);
+
+    //Update in the table
+    row.completed = row.completed === 0 ? 1:0;
+    const newTask={...currentTask.current,
+      usercreate:currentTask.current.usercreateId,
+      userassigned:currentTask.current.userassignedId}
+    console.log(newTask)
+    await Axios.put("tasks/"+currentTask.current.id,newTask).then(response=>{
+      console.log(response);     
+      //setPage(-1);
+      //setTimeout(() => {setPage(page);}, 500);
+      //setRows( previousRows => ( [...previousRows.filter(x=>x.id.toString() !== currentTask.current.id.toString()), {...newTask,usercreateId:newTask.usercreate,userassignedId:newTask.userassigned, usercreate:currentUser.Name, userassigned:dataUsers.current?.find(y=>y.id===newTask.userassigned)?.name }].sort((a, b) => a.id > b.id ? 1 : a.id < b.id ? -1 : 0)  ));
+  });
+    currentTask.current=row;
+
   };
 
   const handleChangePage = (event, newPage) => {
@@ -310,9 +366,9 @@ export default function TableTasks() {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
+  /*const handleChangeDense = (event) => {
     setDense(event.target.checked);
-  };
+  };*/
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
@@ -331,8 +387,10 @@ export default function TableTasks() {
 
   return (
     <Box sx={{ width: '100%' }}>
+      {open && <AddEditDialog open={open} setOpen={setOpen} dataUsers={dataUsers} option={option} currentUser={currentUser} setRows={setRows} currentTask={currentTask} setRecharge={setRecharge} page={page} setPage={setPage} />}
+      <ConfirmDialog open={openConfirmation} setOpen={setOpenConfirmation} page={page} setPage={setPage} currentTask={currentTask} setRows={setRows}/>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} setOpen={setOpen} option={option} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -343,12 +401,12 @@ export default function TableTasks() {
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
+              //onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
             <TableBody>
-              {rows.map((row, index) => {
+              {visibleRows.map((row, index) => {
                 const isItemSelected = isSelected(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -373,6 +431,7 @@ export default function TableTasks() {
                       />
                     </TableCell>
                     <TableCell
+                      align="left"
                       component="th"
                       id={labelId}
                       scope="row"
@@ -380,10 +439,10 @@ export default function TableTasks() {
                     >
                       {row.title}
                     </TableCell>
-                    <TableCell style={{ width: 360 }} align="right">{row.order}</TableCell>
-                    <TableCell align="right">{row.usercreate}</TableCell>
-                    <TableCell align="right">{row.userassigned}</TableCell>
-                    <TableCell align="right"> <OptionsTask/> </TableCell>
+                    <TableCell style={{ width: 360 }} align="center">{row.order}</TableCell>
+                    <TableCell align="center">{row.usercreate}</TableCell>
+                    <TableCell align="center">{row.userassigned}</TableCell>
+                    <TableCell align="right"> {row.usercreateId.toString().trim() === currentUser.Id.toString().trim() && <OptionsTask setOpen={setOpenConfirmation} setOpenEdit={setOpen} option={option} />} </TableCell>
                     
                   </TableRow>
                 );
