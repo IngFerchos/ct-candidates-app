@@ -1,5 +1,5 @@
 
-import React,{ useEffect, useLayoutEffect } from 'react';
+import React,{ useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -18,10 +18,6 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import OptionsTask from './OptionsTask';
 import SearchText from './SearchText';
@@ -29,41 +25,11 @@ import Divider from '@mui/material/Divider';
 import Axios from '../../config/axios'
 import AddEditDialog from './AddEditDialog';
 import ConfirmDialog from './ConfirmDialog';
-
-
-function createData(id, title, order, usercreate, userassigned) {
-  return {
-    id,
-    title,
-    order,
-    usercreate,
-    userassigned,
-  };
-}
-
-/*const rows = [
-  createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
-  createData(2, 'Donut', 452, 25.0, 51, 4.9),
-  createData(3, 'Eclair', 262, 16.0, 24, 6.0),
-  createData(4, 'Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
-  createData(6, 'Honeycomb', 408, 3.2, 87, 6.5),
-  createData(7, 'Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData(8, 'Jelly Bean', 375, 0.0, 94, 0.0),
-  createData(9, 'KitKat', 518, 26.0, 65, 7.0),
-  createData(10, 'Lollipop', 392, 0.2, 98, 0.0),
-  createData(11, 'Marshmallow', 318, 0, 81, 2.0),
-  createData(12, 'Nougat', 360, 19.0, 9, 37.0),
-  createData(13, 'Oreo', 437, 18.0, 63, 4.0),
-];*/
+import OptionsFilter from './OptionsFilter';
 
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
+  if (b[orderBy] < a[orderBy]) {return -1;}
+  if (b[orderBy] > a[orderBy]) {return 1;}
   return 0;
 }
 
@@ -73,10 +39,6 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -124,7 +86,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+  const { order, orderBy, onRequestSort } =
     props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -134,15 +96,6 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-          {/* <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />  */}
         </TableCell> 
         {headCells.map((headCell) => (
           <TableCell
@@ -180,8 +133,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, setOpen, option } = props;
-
+  const { numSelected, setOpen, option, textFilter, setTextFilter, dataUsers, filters, setFilters } = props;
   return (
     <Toolbar
       sx={{
@@ -193,7 +145,6 @@ function EnhancedTableToolbar(props) {
         }),
       }}
     >
-
         <Typography
           sx={{ flex: '1 1 100%' }}
           color="inherit"
@@ -203,40 +154,25 @@ function EnhancedTableToolbar(props) {
         >
           ({numSelected}) completed
         </Typography>
-
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-
-
         <Tooltip title="Search">
-
-            <SearchText />
-
+            <SearchText textFilter={textFilter} setTextFilter={setTextFilter} />
         </Tooltip>
-
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-
         <Tooltip title="New Task">
           <IconButton>
             <NoteAddIcon onClick={ ()=>{setOpen(true); option.current=1;} } />
           </IconButton>
         </Tooltip>
-      
-
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-
-        <Tooltip title="Filter Tasks">
           <IconButton>
-            <FilterListIcon />
+            <OptionsFilter dataUsers={dataUsers} filters={filters} setFilters={setFilters} />
           </IconButton>
-        </Tooltip>
-
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-
-      
     </Toolbar>
   );
 }
@@ -245,7 +181,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TableTasks({currentUser}) {
+export default function TableTasks({ currentUser }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('id');
   const [selected, setSelected] = React.useState([]);
@@ -262,26 +198,39 @@ export default function TableTasks({currentUser}) {
   const [openConfirmation, setOpenConfirmation] = React.useState(false);
   const [recharge, setRecharge] = React.useState(false);
 
-  useEffect( async () => {
-    const { data } = await Axios.get("users",{},{headers: {}});
-    setUsers([...data]);
-    dataUsers.current=[...data];
+  const [textFilter, setTextFilter] = React.useState('');
+  const [filters, setFilters] = React.useState({
+    FilterCompleted:false,
+    FilterUncompleted:false,
+    FilterUserCreate:'',
+    FilterUserAssigned:''
+  });
+
+  useEffect(() => {
+    const getUsers = async() => {
+      const { data } = await Axios.get("users",{},{headers: {}});
+      setUsers([...data]);
+      dataUsers.current=[...data];  
+    }
+    getUsers();
   }, [])
 
-  useEffect( async () => {
-    let { data } = await Axios.get("tasks");
-    setRows([...data.map(x=> ({...x, usercreateId:x.usercreate, usercreate:dataUsers.current?.find(y=>y.id===x.usercreate)?.name, userassignedId:x.userassigned, userassigned:dataUsers.current?.find(y=>y.id===x.userassigned)?.name }) )]);
-    setSelected( data.filter(x=>x.completed===1).map(y=>y.id) );
-    //console.log(data.filter(x=>x.completed===1).map(y=>y.id));
-    setTimeout(() => {
-      let pages;
-      (data.length % rowsPerPage) === 0 ?
-       pages = parseInt(data.length / rowsPerPage)-1:
-       pages = parseInt(data.length / rowsPerPage)
-      handleRequestSort('id'); 
-      setPage(pages);
-    }, 500);
-    
+  useEffect( () => {
+    const getTasks = async() => {
+      let { data } = await Axios.get("tasks");
+      setRows([...data.map(x=> ({...x, usercreateId:x.usercreate, usercreate:dataUsers.current?.find(y=>y.id===x.usercreate)?.name, userassignedId:x.userassigned, userassigned:dataUsers.current?.find(y=>y.id===x.userassigned)?.name }) )]);
+      setSelected( data.filter(x=>x.completed===1).map(y=>y.id) );
+      //console.log(data.filter(x=>x.completed===1).map(y=>y.id));
+      setTimeout(() => {
+        let pages;
+        (data.length % rowsPerPage) === 0 ?
+         pages = parseInt(data.length / rowsPerPage)-1:
+         pages = parseInt(data.length / rowsPerPage)
+        handleRequestSort('id'); 
+        setPage(pages);
+      }, 500);  
+    }
+    getTasks();
   }, [])
 
   useEffect( () => {
@@ -296,37 +245,22 @@ export default function TableTasks({currentUser}) {
     
   }, [recharge])
 
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-    
   };
 
-  /*const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };*/
-
   const handleClick = async (event, id, row) => {
-
     console.log('cliekeoi', event);
     console.log('id', id);
     console.log('row', row);
     currentTask.current=row;
-
     //To disabled in the last colum, so that you can press the options delete and modify
     if (event.nativeEvent.srcElement.cellIndex>4) return;
     if (event.nativeEvent.srcElement.cellIndex===undefined && event.nativeEvent.target.checked===undefined) return;
-
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
@@ -340,7 +274,6 @@ export default function TableTasks({currentUser}) {
       );
     }
     setSelected(newSelected);
-
     //Update in the table
     row.completed = row.completed === 0 ? 1:0;
     const newTask={...currentTask.current,
@@ -348,33 +281,22 @@ export default function TableTasks({currentUser}) {
       userassigned:currentTask.current.userassignedId}
     console.log(newTask)
     await Axios.put("tasks/"+currentTask.current.id,newTask).then(response=>{
-      console.log(response);     
-      //setPage(-1);
-      //setTimeout(() => {setPage(page);}, 500);
-      //setRows( previousRows => ( [...previousRows.filter(x=>x.id.toString() !== currentTask.current.id.toString()), {...newTask,usercreateId:newTask.usercreate,userassignedId:newTask.userassigned, usercreate:currentUser.Name, userassigned:dataUsers.current?.find(y=>y.id===newTask.userassigned)?.name }].sort((a, b) => a.id > b.id ? 1 : a.id < b.id ? -1 : 0)  ));
-  });
+      console.log(response);
+    });
     currentTask.current=row;
-
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
+  const handleChangePage = (event, newPage) => setPage(newPage);
+  
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  /*const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };*/
-
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
@@ -390,7 +312,7 @@ export default function TableTasks({currentUser}) {
       {open && <AddEditDialog open={open} setOpen={setOpen} dataUsers={dataUsers} option={option} currentUser={currentUser} setRows={setRows} currentTask={currentTask} setRecharge={setRecharge} page={page} setPage={setPage} />}
       <ConfirmDialog open={openConfirmation} setOpen={setOpenConfirmation} page={page} setPage={setPage} currentTask={currentTask} setRows={setRows}/>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} setOpen={setOpen} option={option} />
+        <EnhancedTableToolbar numSelected={selected.length} setOpen={setOpen} option={option} textFilter={textFilter} setTextFilter={setTextFilter} dataUsers={dataUsers} filters={filters} setFilters={setFilters} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -401,15 +323,19 @@ export default function TableTasks({currentUser}) {
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              //onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
+              {visibleRows
+                .filter( data => data.title.toUpperCase().includes(textFilter.toUpperCase()) || data.order.toUpperCase().includes(textFilter.toUpperCase()) )
+                .filter( data => (filters.FilterCompleted ? data.completed === 1 : data) )
+                .filter( data => (filters.FilterUncompleted ? data.completed === 0 : data) )
+                .filter( data => (filters.FilterUserCreate !=='' ? parseInt(data.usercreateId) === parseInt(filters.FilterUserCreate) : data) )
+                .filter( data => (filters.FilterUserAssigned !=='' ? parseInt(data.userassignedId) === parseInt(filters.FilterUserAssigned) : data) )
+                .map((row, index) => {
                 const isItemSelected = isSelected(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
-
                 return (
                   <TableRow
                     hover
@@ -425,25 +351,14 @@ export default function TableTasks({currentUser}) {
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
+                        inputProps={{'aria-labelledby': labelId,}}
                       />
                     </TableCell>
-                    <TableCell
-                      align="left"
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.title}
-                    </TableCell>
+                    <TableCell align="left" component="th" id={labelId} scope="row" padding="none">{row.title}</TableCell>
                     <TableCell style={{ width: 360 }} align="center">{row.order}</TableCell>
                     <TableCell align="center">{row.usercreate}</TableCell>
                     <TableCell align="center">{row.userassigned}</TableCell>
                     <TableCell align="right"> {row.usercreateId.toString().trim() === currentUser.Id.toString().trim() && <OptionsTask setOpen={setOpenConfirmation} setOpenEdit={setOpen} option={option} />} </TableCell>
-                    
                   </TableRow>
                 );
               })}
@@ -469,7 +384,6 @@ export default function TableTasks({currentUser}) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      
     </Box>
   );
 }

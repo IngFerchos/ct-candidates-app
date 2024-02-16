@@ -24,7 +24,6 @@ export default function ConfirmDialog({ open, setOpen, page, setPage, currentTas
       setRows( previousRows => ( [...previousRows.filter(x=>x.id.toString() !== currentTask.current.id.toString()) ].sort((a, b) => a.id > b.id ? 1 : a.id < b.id ? -1 : 0)  ));
     });
     setOpen(false);
-  
   }
 
   return (
@@ -43,7 +42,7 @@ export default function ConfirmDialog({ open, setOpen, page, setPage, currentTas
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Are you sure to delete the Item ? changes cannot be reverted.
+            {`Are you sure to delete the Item ${currentTask.current?.title} ? changes cannot be reverted.`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
