@@ -5,7 +5,7 @@
 @import 'variables';
 
 // Bootstrap
-@import 'bootstrap/scss/bootstrap';
+
 
 
 .css-1irxdah-MuiTableRow-root.Mui-selected {
@@ -831,6 +831,9 @@ video {
     }
 }
 
+@import 'bootstrap/scss/bootstrap';
+
 p {
     margin-top: 0px !important;
 }
+
