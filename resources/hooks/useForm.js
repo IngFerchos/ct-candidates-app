@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-
 export const useForm = ( initState ) => {
 
     const [ formData, setFormData ] = useState(initState);

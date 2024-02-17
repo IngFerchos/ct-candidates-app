@@ -8,7 +8,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Tooltip from '@mui/material/Tooltip';
 
-
 export default function OptionsTask({ setOpen, setOpenEdit, option }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);

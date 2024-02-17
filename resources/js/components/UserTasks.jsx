@@ -18,10 +18,8 @@ function UserTasks() {
                 <div className="col-md-10">
                     <div className="card text-center">
                         <div className="card-header"><h3>React-Laravel TODO List </h3></div>
-                        {/* <div className=""> {` User: ${usr.Id} ${usr.Name} `} </div> */}
                         <TableTasks currentUser={usr}/>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -31,7 +29,6 @@ function UserTasks() {
 }
 
 export default UserTasks;
-
 
 if (document.getElementById('usertasks')) {
     ReactDOM.render(<UserTasks />, document.getElementById('usertasks'));

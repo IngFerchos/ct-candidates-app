@@ -11,13 +11,9 @@ import { Alert, AlertTitle, TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
-
-//import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useForm } from '../../hooks/useForm';
 import Axios from '../../config/axios';
-
 
 function PaperComponent(props) {
     return (
@@ -31,7 +27,6 @@ function PaperComponent(props) {
 }
 
 export default function AddEditDialog({ open, setOpen, dataUsers, option, currentUser, setRows, currentTask, setRecharge, page, setPage }) {
-    //const [open, setOpen] = React.useState(false);
     const [user, setUser] = React.useState(option.current === 1 ? '' : currentTask.current?.userassignedId);
     const { formData, onChange } = useForm({
         title: option.current === 1 ? '' : currentTask.current?.title,
@@ -78,9 +73,6 @@ export default function AddEditDialog({ open, setOpen, dataUsers, option, curren
 
     return (
         <React.Fragment>
-            {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open draggable dialog
-      </Button> */}
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -91,11 +83,9 @@ export default function AddEditDialog({ open, setOpen, dataUsers, option, curren
                     <div className="card text-center">
                         <div className="card-header"><h4>{option.current === 1 ? 'Add New Task' : 'Editing Task'} </h4></div>
                     </div>
-
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText style={{ width: '25vw' }}>
-
                         <Divider orientation="vertical" variant="middle" flexItem />
                         <TextField
                             error={enabledErrors && title === ''}

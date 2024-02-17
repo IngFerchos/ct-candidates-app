@@ -1,5 +1,5 @@
 
-import React,{ useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -28,8 +28,8 @@ import ConfirmDialog from './ConfirmDialog';
 import OptionsFilter from './OptionsFilter';
 
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {return -1;}
-  if (b[orderBy] > a[orderBy]) {return 1;}
+  if (b[orderBy] < a[orderBy]) { return -1; }
+  if (b[orderBy] > a[orderBy]) { return 1; }
   return 0;
 }
 
@@ -82,7 +82,7 @@ const headCells = [
     disablePadding: false,
     label: '',
   },
-  
+
 ];
 
 function EnhancedTableHead(props) {
@@ -96,7 +96,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-        </TableCell> 
+        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -126,7 +126,6 @@ function EnhancedTableHead(props) {
 EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -145,34 +144,34 @@ function EnhancedTableToolbar(props) {
         }),
       }}
     >
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-          style={{ textAlign:'justify' }}
-        >
-          ({numSelected}) completed
-        </Typography>
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-        <Tooltip title="Search">
-            <SearchText textFilter={textFilter} setTextFilter={setTextFilter} />
-        </Tooltip>
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-        <Tooltip title="New Task">
-          <IconButton>
-            <NoteAddIcon onClick={ ()=>{setOpen(true); option.current=1;} } />
-          </IconButton>
-        </Tooltip>
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-          <IconButton>
-            <OptionsFilter dataUsers={dataUsers} filters={filters} setFilters={setFilters} />
-          </IconButton>
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <Typography
+        sx={{ flex: '1 1 100%' }}
+        color="inherit"
+        variant="subtitle1"
+        component="div"
+        style={{ textAlign: 'justify' }}
+      >
+        ({numSelected}) completed
+      </Typography>
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <Tooltip title="Search">
+        <SearchText textFilter={textFilter} setTextFilter={setTextFilter} />
+      </Tooltip>
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <Tooltip title="New Task">
+        <IconButton>
+          <NoteAddIcon onClick={() => { setOpen(true); option.current = 1; }} />
+        </IconButton>
+      </Tooltip>
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <IconButton>
+        <OptionsFilter dataUsers={dataUsers} filters={filters} setFilters={setFilters} />
+      </IconButton>
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
     </Toolbar>
   );
 }
@@ -188,7 +187,7 @@ export default function TableTasks({ currentUser }) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  
+
   const [rows, setRows] = React.useState([]);
   const [users, setUsers] = React.useState([]);
   const dataUsers = React.useRef([]);
@@ -200,49 +199,49 @@ export default function TableTasks({ currentUser }) {
 
   const [textFilter, setTextFilter] = React.useState('');
   const [filters, setFilters] = React.useState({
-    FilterCompleted:false,
-    FilterUncompleted:false,
-    FilterUserCreate:'',
-    FilterUserAssigned:''
+    FilterCompleted: false,
+    FilterUncompleted: false,
+    FilterUserCreate: '',
+    FilterUserAssigned: ''
   });
 
   useEffect(() => {
-    const getUsers = async() => {
-      const { data } = await Axios.get("users",{},{headers: {}});
+    const getUsers = async () => {
+      const { data } = await Axios.get("users", {}, { headers: {} });
       setUsers([...data]);
-      dataUsers.current=[...data];  
+      dataUsers.current = [...data];
     }
     getUsers();
   }, [])
 
-  useEffect( () => {
-    const getTasks = async() => {
+  useEffect(() => {
+    const getTasks = async () => {
       let { data } = await Axios.get("tasks");
-      setRows([...data.map(x=> ({...x, usercreateId:x.usercreate, usercreate:dataUsers.current?.find(y=>y.id===x.usercreate)?.name, userassignedId:x.userassigned, userassigned:dataUsers.current?.find(y=>y.id===x.userassigned)?.name }) )]);
-      setSelected( data.filter(x=>x.completed===1).map(y=>y.id) );
+      setRows([...data.map(x => ({ ...x, usercreateId: x.usercreate, usercreate: dataUsers.current?.find(y => y.id === x.usercreate)?.name, userassignedId: x.userassigned, userassigned: dataUsers.current?.find(y => y.id === x.userassigned)?.name }))]);
+      setSelected(data.filter(x => x.completed === 1).map(y => y.id));
       //console.log(data.filter(x=>x.completed===1).map(y=>y.id));
       setTimeout(() => {
         let pages;
         (data.length % rowsPerPage) === 0 ?
-         pages = parseInt(data.length / rowsPerPage)-1:
-         pages = parseInt(data.length / rowsPerPage)
-        handleRequestSort('id'); 
+          pages = parseInt(data.length / rowsPerPage) - 1 :
+          pages = parseInt(data.length / rowsPerPage)
+        handleRequestSort('id');
         setPage(pages);
-      }, 500);  
+      }, 500);
     }
     getTasks();
   }, [])
 
-  useEffect( () => {
+  useEffect(() => {
     setTimeout(() => {
       let pages;
       (rows.length % rowsPerPage) === 0 ?
-       pages = parseInt(rows.length / rowsPerPage)-1:
-       pages = parseInt(rows.length / rowsPerPage)
-      handleRequestSort('id'); 
+        pages = parseInt(rows.length / rowsPerPage) - 1 :
+        pages = parseInt(rows.length / rowsPerPage)
+      handleRequestSort('id');
       setPage(pages);
     }, 500);
-    
+
   }, [recharge])
 
   const handleRequestSort = (event, property) => {
@@ -252,13 +251,13 @@ export default function TableTasks({ currentUser }) {
   };
 
   const handleClick = async (event, id, row) => {
-    console.log('cliekeoi', event);
+    console.log('clicked ID', event);
     console.log('id', id);
     console.log('row', row);
-    currentTask.current=row;
+    currentTask.current = row;
     //To disabled in the last colum, so that you can press the options delete and modify
-    if (event.nativeEvent.srcElement.cellIndex>4) return;
-    if (event.nativeEvent.srcElement.cellIndex===undefined && event.nativeEvent.target.checked===undefined) return;
+    if (event.nativeEvent.srcElement.cellIndex > 4) return;
+    if (event.nativeEvent.srcElement.cellIndex === undefined && event.nativeEvent.target.checked === undefined) return;
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
     if (selectedIndex === -1) {
@@ -275,19 +274,21 @@ export default function TableTasks({ currentUser }) {
     }
     setSelected(newSelected);
     //Update in the table
-    row.completed = row.completed === 0 ? 1:0;
-    const newTask={...currentTask.current,
-      usercreate:currentTask.current.usercreateId,
-      userassigned:currentTask.current.userassignedId}
+    row.completed = row.completed === 0 ? 1 : 0;
+    const newTask = {
+      ...currentTask.current,
+      usercreate: currentTask.current.usercreateId,
+      userassigned: currentTask.current.userassignedId
+    }
     console.log(newTask)
-    await Axios.put("tasks/"+currentTask.current.id,newTask).then(response=>{
+    await Axios.put("tasks/" + currentTask.current.id, newTask).then(response => {
       console.log(response);
     });
-    currentTask.current=row;
+    currentTask.current = row;
   };
 
   const handleChangePage = (event, newPage) => setPage(newPage);
-  
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -310,7 +311,7 @@ export default function TableTasks({ currentUser }) {
   return (
     <Box sx={{ width: '100%' }}>
       {open && <AddEditDialog open={open} setOpen={setOpen} dataUsers={dataUsers} option={option} currentUser={currentUser} setRows={setRows} currentTask={currentTask} setRecharge={setRecharge} page={page} setPage={setPage} />}
-      <ConfirmDialog open={openConfirmation} setOpen={setOpenConfirmation} page={page} setPage={setPage} currentTask={currentTask} setRows={setRows}/>
+      <ConfirmDialog open={openConfirmation} setOpen={setOpenConfirmation} page={page} setPage={setPage} currentTask={currentTask} setRows={setRows} />
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} setOpen={setOpen} option={option} textFilter={textFilter} setTextFilter={setTextFilter} dataUsers={dataUsers} filters={filters} setFilters={setFilters} />
         <TableContainer>
@@ -322,46 +323,46 @@ export default function TableTasks({ currentUser }) {
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
-              orderBy={orderBy}
+              orderBy={orderBy || 'asc'}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
             <TableBody>
               {visibleRows
-                .filter( data => data.title.toUpperCase().includes(textFilter.toUpperCase()) || data.order.toUpperCase().includes(textFilter.toUpperCase()) )
-                .filter( data => (filters.FilterCompleted ? data.completed === 1 : data) )
-                .filter( data => (filters.FilterUncompleted ? data.completed === 0 : data) )
-                .filter( data => (filters.FilterUserCreate !=='' ? parseInt(data.usercreateId) === parseInt(filters.FilterUserCreate) : data) )
-                .filter( data => (filters.FilterUserAssigned !=='' ? parseInt(data.userassignedId) === parseInt(filters.FilterUserAssigned) : data) )
+                .filter(data => data.title.toUpperCase().includes(textFilter.toUpperCase()) || data.order.toUpperCase().includes(textFilter.toUpperCase()))
+                .filter(data => (filters.FilterCompleted ? data.completed === 1 : data))
+                .filter(data => (filters.FilterUncompleted ? data.completed === 0 : data))
+                .filter(data => (filters.FilterUserCreate !== '' ? parseInt(data.usercreateId) === parseInt(filters.FilterUserCreate) : data))
+                .filter(data => (filters.FilterUserAssigned !== '' ? parseInt(data.userassignedId) === parseInt(filters.FilterUserAssigned) : data))
                 .map((row, index) => {
-                const isItemSelected = isSelected(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.id, row)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.id}
-                    selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{'aria-labelledby': labelId,}}
-                      />
-                    </TableCell>
-                    <TableCell align="left" component="th" id={labelId} scope="row" padding="none">{row.title}</TableCell>
-                    <TableCell style={{ width: 360 }} align="center">{row.order}</TableCell>
-                    <TableCell align="center">{row.usercreate}</TableCell>
-                    <TableCell align="center">{row.userassigned}</TableCell>
-                    <TableCell align="right"> {row.usercreateId.toString().trim() === currentUser.Id.toString().trim() && <OptionsTask setOpen={setOpenConfirmation} setOpenEdit={setOpen} option={option} />} </TableCell>
-                  </TableRow>
-                );
-              })}
+                  const isItemSelected = isSelected(row.id);
+                  const labelId = `enhanced-table-checkbox-${index}`;
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => handleClick(event, row.id, row)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.id}
+                      selected={isItemSelected}
+                      sx={{ cursor: 'pointer' }}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{ 'aria-labelledby': labelId, }}
+                        />
+                      </TableCell>
+                      <TableCell align="left" component="th" id={labelId} scope="row" padding="none">{row.title}</TableCell>
+                      <TableCell style={{ width: 360 }} align="center">{row.order}</TableCell>
+                      <TableCell align="center">{row.usercreate}</TableCell>
+                      <TableCell align="center">{row.userassigned}</TableCell>
+                      <TableCell align="right"> {row.usercreateId.toString().trim() === currentUser.Id.toString().trim() && <OptionsTask setOpen={setOpenConfirmation} setOpenEdit={setOpen} option={option} />} </TableCell>
+                    </TableRow>
+                  );
+                })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{

@@ -1,21 +1,33 @@
-## Evaluation CT by #CTDesarrallo #Funiber
+# Evaluation: CT TODOList By Felipe Torres
+***
+### Developed with Laravel&nbsp;and&nbsp;ReactJS&nbsp;with Material UI Componentes
 
-Welcome candidate to our technical skills assessment project.
+## Steps to run:
 
-Carefully review the questions provided by your evaluator then try to solve them with this project and show us your best skills
+* Download the files from the repository
+```
+$ git clone https://github.com/felipet73/ct-candidates-app
+```
+* Make sure you set your environment variables in the .env file according .env.template
+* Run the migrations to create the respective tables
+```
+$ cd ../path/to/the/file
+$ php artisan migrate
+```
+* Run Laravel and React dependency installations
+```
+$ composer install
+$ npm install
+```
+* Run wamp and node servers
+```
+$ php artisan serve
+$ npm run dev
+```
+* Open the application in the web browser
+```
+$ http://127.0.0.1:8000/home
+```
 
-I wish you good luck
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
