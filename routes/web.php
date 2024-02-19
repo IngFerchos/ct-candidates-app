@@ -30,8 +30,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::resource('/tasks', TaskController::class);
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::resource('tasks', TaskController::class);
+    Route::put('/tasks/{task}/change_status', [TaskController::class, 'changeStatus'])->name('tasks.change_status');
+    Route::post('/tasks/sort', [TaskController::class, 'sort'])->name('tasks.sort');
 });
