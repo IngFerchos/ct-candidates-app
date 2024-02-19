@@ -10,7 +10,7 @@ class Task extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name', 'description', 'is_completed', 'order', 'user_id'];
+    protected $fillable = ['title', 'is_completed', 'order', 'user_id'];
 
     protected $casts = [
         'is_completed' => 'boolean',
