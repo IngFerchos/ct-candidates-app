@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
+import ThemeSwitcher from '@/Components/ThemeSwitcher.vue';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
 import Dropdown from '@/Components/Dropdown.vue';
@@ -41,15 +42,16 @@ const logout = () => {
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('tasks.index')">
                                     <ApplicationMark class="block h-9 w-auto" />
                                 </Link>
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                <NavLink :href="route('tasks.index')" :active="route().current('tasks.index')">
+                                    <fa-icon icon="home" class="mr-2"/>
+                                    Principal
                                 </NavLink>
                             </div>
                         </div>
@@ -111,6 +113,8 @@ const logout = () => {
                                         </div>
                                     </template>
                                 </Dropdown>
+
+                                <ThemeSwitcher class="ml-2 mr-2"/>
                             </div>
 
                             <!-- Settings Dropdown -->
@@ -135,11 +139,11 @@ const logout = () => {
                                     <template #content>
                                         <!-- Account Management -->
                                         <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Manage Account
+                                            Gestionar Cuenta
                                         </div>
 
                                         <DropdownLink :href="route('profile.show')">
-                                            Profile
+                                            Perfil
                                         </DropdownLink>
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
@@ -158,6 +162,8 @@ const logout = () => {
                                 </Dropdown>
                             </div>
                         </div>
+
+                        
 
                         <!-- Hamburger -->
                         <div class="-me-2 flex items-center sm:hidden">
@@ -191,8 +197,9 @@ const logout = () => {
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                        <ResponsiveNavLink :href="route('tasks.index')" :active="route().current('tasks.index')">
+                            <fa-icon icon="home" class="mr-2"/>
+                            Principal
                         </ResponsiveNavLink>
                     </div>
 
