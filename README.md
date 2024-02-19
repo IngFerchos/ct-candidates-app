@@ -19,3 +19,67 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 - [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
+
+## Installing and Running Laravel with Inertia and Vue 3
+
+This guide outlines the steps to install and run a Laravel project with Inertia and Vue 3 on a new machine.
+
+### Prerequisites:
+- PHP 8.0 or later
+- Composer
+- Node.js and npm (or yarn)
+
+### Instructions:
+
+#### Clone the Project:
+```{Bash}
+git clone https://your-repository-url.git
+cd your-project-directory
+```
+
+#### Install Dependencies:
+```{Bash}
+composer install
+npm install (or yarn install)
+```
+
+##### Configure Database:
+- Create a .env file in the project root if it doesn't exist.
+- Copy .env.example to .env and update database credentials.
+
+#### Generate Application Key:
+```{Bash}
+php artisan key:generate
+```
+
+#### Run Migrations:
+```{Bash}
+php artisan migrate
+```
+
+#### Build Vue Assets:
+```{Bash}
+npm run build (or yarn build)
+```
+
+#### Start Development Server:
+```{Bash}
+php artisan serve
+```
+
+#### Access the Application:
+
+Open a web browser and go to http://localhost:8000.
+
+### Additional Notes:
+If you' re running this project with xampp, you have to follow this steps:
+
+#### Find Response.php from inertijs dependency
+- Go to vendor/inertiajs/inertia-laravel/src/Rsponse.php and change line 102 with this: 
+```{php}
+'url' => $request->getRequestUri()
+```
+- Create a Enviroment Variable with this:
+```ASSET_URL="${APP_URL}/public"```
+
+I hope this helps!
