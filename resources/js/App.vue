@@ -1,15 +1,6 @@
 <template>
-    <v-app>
-    <!-- <v-app-bar :elevation="2" color="primary">
-            <template v-slot:prepend>
-                <v-app-bar-nav-icon></v-app-bar-nav-icon>
-            </template>
-            <v-app-bar-title>Application Bar</v-app-bar-title>
-        </v-app-bar> -->
-        <v-main>
-            <router-view></router-view>
-        </v-main>
-    </v-app>
+    <v-toolbar title="To Do App"></v-toolbar>
+    <router-view></router-view>
 </template>
 <style scoped>
 </style>

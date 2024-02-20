@@ -1,11 +1,50 @@
+<script setup>
+import { ref } from "vue";
+import { updateTask, updateTaskStatus, deleteTask } from "../services/tasks.js";
+
+const props = defineProps({
+    task: { type: Object, required: true },
+    modifiable: { type: Boolean, default: false }
+});
+
+const emit = defineEmits(['update-task', 'delete-task']);
+
+let taskData = ref(props.task);
+let modifiable = ref(props.modifiable);
+
+const updateTaskById = (id) => {
+    updateTask(id, { title: taskData.value.title })
+        .then(res => res.data)
+        .then(data => {
+            modifiable.value = false;
+            taskData.value = data.task;
+            emit('update-task');
+        })
+        .catch(console.error);
+}
+
+const updateTaskStatusById = (id) => {
+    updateTaskStatus(id, { complete: taskData.value.complete })
+        .then(res => res.data)
+        .catch(console.error);
+}
+
+const deleteTaskById = (id) => {
+    deleteTask(id).then(res => res.data)
+        .then(data => { emit('delete-task') })
+        .catch(console.error);
+}
+
+</script>
+
 <template>
     <v-row class="pa-2 mt-0">
         <v-col cols="1">
-            <v-checkbox v-model="taskData.complete" v-on:change="updateTaskStatus(taskData.id)"/>
+            <v-checkbox v-model="taskData.complete" v-on:change="updateTaskStatusById(taskData.id)"/>
         </v-col>
         <v-col cols="11">
             <div class="task-content">
-                <form @submit.prevent="updateTask(taskData.id)" style="width: 100%;" class="d-flex">
+                <form @submit.prevent="updateTaskById(taskData.id)" style="width: 100%;" class="d-flex">
                     <v-text-field
                         :readonly="!modifiable"
                         :flat="!modifiable"
@@ -31,7 +70,7 @@
                             <v-icon>mdi mdi-book-edit</v-icon>
                             <v-tooltip activator="parent" location="end">Edit Task</v-tooltip>
                         </v-btn>
-                        <v-btn variant="plain" icon @click="deleteTask(taskData.id)">
+                        <v-btn variant="plain" icon @click="deleteTaskById(taskData.id)">
                             <v-icon color="red">mdi mdi-delete-circle</v-icon>
                             <v-tooltip activator="parent" location="end">Delete Task</v-tooltip>
                         </v-btn>
@@ -41,55 +80,6 @@
         </v-col>
     </v-row>
 </template>
-
-<script setup>
-import axios from "axios";
-import { ref } from "vue";
-
-const props = defineProps({
-    task: {
-        type: Object,
-        required: true,
-    },
-    modifiable: {
-        type: Boolean,
-        default: false
-    }
-});
-
-const emit = defineEmits(['update-task', 'delete-task']);
-
-let taskData = ref(props.task);
-let modifiable = ref(props.modifiable);
-
-const updateTask = (id) => {
-    axios.put(`http://127.0.0.1:8000/api/tasks/${id}`, { title: taskData.value.title })
-        .then(res => res.data)
-        .then(data => {
-            modifiable.value = false;
-            taskData.value = data.task;
-            emit('update-task');
-        })
-        .catch(console.error);
-}
-
-const updateTaskStatus = (id) => {
-    axios.put(`http://127.0.0.1:8000/api/tasks/complete_status/${id}`, { complete: taskData.value.complete })
-        .then(res => res.data)
-        .then(data => {})
-        .catch(console.error);
-}
-
-const deleteTask = (id) => {
-    axios.delete(`http://127.0.0.1:8000/api/tasks/${id}`)
-        .then(res => res.data)
-        .then(data => {
-            emit('delete-task');
-        })
-        .catch(console.error);
-}
-
-</script>
 
 <style scoped>
 

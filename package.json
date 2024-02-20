@@ -16,8 +16,10 @@
         "vite-plugin-vuetify": "^2.0.1",
         "volar-service-vetur": "^0.0.30",
         "vue": "^3.4.19",
+        "vue-draggable-plus": "^0.3.5",
         "vue-router": "^4.2.5",
         "vuedraggable": "^4.1.0",
-        "vuetify": "^3.5.4"
+        "vuetify": "^3.5.4",
+        "vuex": "^4.0.2"
     }
 }

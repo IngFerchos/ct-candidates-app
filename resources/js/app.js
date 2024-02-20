@@ -16,5 +16,6 @@ const vuetify = createVuetify({
 
 app.use(vuetify);
 app.use(router);
+
 app.component('App', App);
 app.mount("#app");
