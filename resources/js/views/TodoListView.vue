@@ -9,6 +9,7 @@ let feedbackAlert = ref({ msg: '', show:false });
 const viewForm = ref('');
 
 const showFeedBackAlert = (msg) => {
+    console.log(msg);
     feedbackAlert.value.msg = msg,
     feedbackAlert.value.show = true;
 }
@@ -16,8 +17,8 @@ const showFeedBackAlert = (msg) => {
 </script>
 
 <template>
-    <v-alert v-show="feedbackAlert.show" border="start" variant="tonal" closable close-label="Close Alert" 
-        color="green" :title="feedbackAlert.msg"></v-alert>
+    <v-alert v-model="feedbackAlert.show" border="start" variant="tonal" closable close-label="Close Alert" 
+        color="green" :title="feedbackAlert.msg" @click:close="feedbackAlert.show = false"></v-alert>
     <div id="container">
         <div class="todo-container">
             <h1 class="mb-6">Your Pending Tasks</h1>

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { updateTask, updateTaskStatus, deleteTask } from "../services/tasks.js";
+import { updateTask, updateTaskStatus, deleteTask } from "../../services/tasks.js";
 
 const props = defineProps({
     task: { type: Object, required: true },
@@ -53,7 +53,7 @@ const deleteTaskById = (id) => {
                         v-model="taskData.title"
                         class="py-2"
                         wrap="true"
-                        :class="{ 'complete-task-text': taskData.complete }"
+                        :class="{ 'complete-task-text': taskData.complete && !modifiable }"
                     />
                     <div class="action-buttons" v-if="modifiable">
                         <v-btn type="submit" variant="plain" icon>

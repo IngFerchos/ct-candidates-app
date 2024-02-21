@@ -7,7 +7,7 @@ import "vuetify/styles";
 import { createVuetify } from "vuetify";
 
 import App from "./App.vue";
-import router from './router/index';
+import router from './router';
 
 const app = createApp({});
 const vuetify = createVuetify({ 
