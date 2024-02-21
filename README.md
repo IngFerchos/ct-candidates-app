@@ -1,21 +1,46 @@
-## Evaluation CT by #CTDesarrallo #Funiber
+## Evaluation CT Todo List by Joan Gutierrez
 
-Welcome candidate to our technical skills assessment project.
+A todo list application was created in this repository was developed with Laravel Framework v10, Vue.js 3 and Vuetify.
 
-Carefully review the questions provided by your evaluator then try to solve them with this project and show us your best skills
+## Installing and Run Laravel project
 
-I wish you good luck
+### Requeriments
 
-## About Laravel
+- PHP 8.0 or later
+- Node JS and npm
+- Composer
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Instructions
+Run the following commands:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Install all packages for laravel and VueJS 3 project
+```
+composer install
+npm install
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Run the migrations and seeders
+```
+php artisan migrate --seed
+```
+
+#### For database and appliaction settings.
+
+Copy .env.example file and rename like as .env
+
+Generate a new application key:
+```
+php artisan key:generate
+```
+
+Build vue assets
+```
+npm run build
+```
+
+Run server
+```
+php artisan serve
+```
+
+Open a web browser and go to http://localhost:8000.
