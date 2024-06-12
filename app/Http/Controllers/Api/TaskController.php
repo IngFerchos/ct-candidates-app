@@ -11,7 +11,6 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        // Obtener todas las tareas del usuario autenticado
         $tasks = $request->user()->tasks;
         return response()->json($tasks);
     }

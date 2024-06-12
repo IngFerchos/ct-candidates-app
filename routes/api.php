@@ -3,8 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\TaskController; // Asegúrate de importar el controlador de tareas
-use App\Http\Controllers\Api\AuthController; // Asegúrate de importar el controlador de autenticación
+use App\Http\Controllers\Api\TaskController;
 
 /*
 |--------------------------------------------------------------------------

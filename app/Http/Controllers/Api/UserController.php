@@ -12,9 +12,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        // Obtener todos los usuarios de la base de datos
         $users = User::all();
-        // Retornar los usuarios como respuesta JSON
         return response()->json($users);
     }
 
@@ -41,18 +39,14 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        // Buscar el usuario por ID
         $user = User::find($id);
 
-        // Verificar si el usuario existe
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
 
-        // Eliminar el usuario
         $user->delete();
 
-        // Retornar una respuesta exitosa
         return response()->json(['message' => 'User deleted successfully'], 200);
     }
     
