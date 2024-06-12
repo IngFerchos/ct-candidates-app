@@ -1,4 +1,3 @@
-# For more information: https://laravel.com/docs/sail
 version: '3'
 services:
     laravel.test:
@@ -10,6 +9,7 @@ services:
         volumes:
             - '.:/app'
         networks:
+            - my_network
             - sail
         depends_on:
             - mysql
@@ -27,6 +27,7 @@ services:
         volumes:
             - 'sail-mysql:/var/lib/mysql'
         networks:
+            - my_network
             - sail
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
@@ -40,6 +41,8 @@ services:
         networks:
             - sail
 networks:
+    my_network:
+        driver: bridge
     sail:
         driver: bridge
 volumes:
