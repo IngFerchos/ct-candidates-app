@@ -50,7 +50,7 @@ const EditTodoForm = () => {
                     </div>
                     <div className="flex justify-center gap-4">
                         <span className="text-sky-900 font-bold text-2xl">Order: </span>
-                        <input type="number" className="rounded-xl p-2 w-10 text-center" 
+                        <input type="number" className="rounded-xl p-2 min-w-1/2 text-center" 
                         value={todo?.order || ""}
                         onChange={(e) => setTodo({...todo, order: parseNumber(e.target.value)})}
                         />
