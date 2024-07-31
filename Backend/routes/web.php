@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    logger()->info('wtf');
-    
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     logger()->info('wtf');
+
+//     return view('welcome');
+// });
