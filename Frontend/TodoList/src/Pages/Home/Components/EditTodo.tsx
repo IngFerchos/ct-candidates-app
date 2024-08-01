@@ -5,16 +5,18 @@ import { FetchTodos } from "../../../Hooks/FetchTodos";
 import { useEffect, useState } from "react";
 import { EditTodo} from "../../../Interfaces/ITodos";
 import { parseNumber } from "../../../utils/parseNumber";
+import { BearerToken } from "../../../Hooks/BearerToken";
 
 const EditTodoForm = () => {
     const navigate = useNavigate()
     const {id} = useParams()
+    const token = BearerToken()
     const [todo, setTodo] = useState<EditTodo | null>(null)
     const {editTodo, getOneTodo, deleteTodo} = FetchTodos()
     useEffect(() => {
         if(id){
             const getTodo = async() => {
-                const response = await getOneTodo(id)
+                const response = await getOneTodo(id, token)
                 setTodo(response)
             }
             getTodo()
@@ -23,14 +25,14 @@ const EditTodoForm = () => {
     },[])
     const submitEditedTodo = async() => {
         if(id && todo){
-            await editTodo(id, todo)
+            await editTodo(id, todo, token)
             navigate("/home")
             window.location.reload()
         }
     }
     const onDeleteTodo = async() => {
         if(id && todo){
-            await deleteTodo(id)
+            await deleteTodo(id, token)
             navigate("/home")
             window.location.reload()
         }

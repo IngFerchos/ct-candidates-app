@@ -2,20 +2,26 @@ import { Outlet, useNavigate } from "react-router";
 import { TodoBox } from "./Components/TodoBox"
 import { IoMdAdd } from "react-icons/io";
 import { FetchTodos } from "../../Hooks/FetchTodos";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Todo } from "../../Interfaces/ITodos";
 import { AiOutlineOrderedList } from "react-icons/ai";
+import { AuthContext } from "../../Context/AuthContext";
+import { BearerToken } from "../../Hooks/BearerToken";
+import { LoginHook } from "../../Hooks/LoginHook";
 const HomePage = () => {
     const { getAllTodos } = FetchTodos()
+    const {logOut} = LoginHook()
     const [todos, setTodos] = useState<Todo[] | []>([])
     const [search, setSearch] = useState<string>("")
+    const token = BearerToken()
     const [filteredTodos, setFilteredTodos] = useState<Todo[] | []>([])
     const [refreshTodos, setRefreshTodos] = useState<boolean>(true)
     const [ordered, setOrdered] = useState<boolean>(false)
+    const authContext = useContext(AuthContext)
     const navigate = useNavigate()
     useEffect(() => {
         const getTodos = async() => {
-            const data = await getAllTodos()
+            const data = await getAllTodos(token)
             setTodos(data)
         }
         getTodos()
@@ -29,12 +35,24 @@ const HomePage = () => {
             setFilteredTodos(filterTodos)
        }
     },[search,ordered,todos])
+    const logout = async() => {
+        const response = await logOut(token)
+        if(response){
+            authContext?.setIsAuth(false)
+            authContext?.setUser(null)
+            localStorage.removeItem('bearer')
+            navigate('/login')
+        }
+    }
     return(
         <div className="w-screen h-screen">
-            <section className="min-h-36 flex justify-center items-center h-1/5">
-                <h1 className="text-sky-300 w-full text-6xl text-center font-extrabold">Your ToDo's</h1>
+            <nav className="w-screen h-16 bg-sky-300 flex justify-end items-center pr-3">
+                <button onClick={() => logout()} className="bg-white w-1/4 h-10 text-sky-300 font-extrabold rounded-xl hover:bg-sky-400 hover:text-white">Log Out</button>
+            </nav>
+            <section className="min-h-36 flex justify-center items-center h-20">
+                <h1 className="text-sky-300 w-full text-6xl text-center font-extrabold">{`Your ToDo's \n ${authContext?.user?.name}`}</h1>
             </section>
-            <section className="w-full h-4/5 p-4 flex flex-col gap-4">
+            <section className="w-full h-3/4 p-4 flex flex-col gap-4">
                 <div className="flex justify-between gap-2">
                     <input placeholder="Search" className="w-full pl-2 rounded-xl text-2xl"
                     onChange={(e) => setSearch(e.target.value)}

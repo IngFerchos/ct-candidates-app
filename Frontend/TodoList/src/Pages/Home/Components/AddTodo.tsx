@@ -3,12 +3,14 @@ import { useNavigate } from "react-router";
 import { FetchTodos } from "../../../Hooks/FetchTodos";
 import { useState } from "react";
 import { parseNumber } from "../../../utils/parseNumber";
+import { BearerToken } from "../../../Hooks/BearerToken";
 const AddTodoForm = () => {
     const navigate = useNavigate()
     const {createTodo} = FetchTodos()
+    const token = BearerToken()
     const [newTodo, setNewTodo] = useState({title: "", order: 1})
     const submitTodo = async() => {
-        await createTodo(newTodo)
+        await createTodo(newTodo, token)
         navigate("/home")
         window.location.reload()
     }

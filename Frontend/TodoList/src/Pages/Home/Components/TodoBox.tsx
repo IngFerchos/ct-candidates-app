@@ -1,6 +1,7 @@
 import { FaCheck } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { FetchTodos } from "../../../Hooks/FetchTodos";
+import { BearerToken } from "../../../Hooks/BearerToken";
 
 interface ComponentProps {
     id: number,
@@ -13,9 +14,10 @@ interface ComponentProps {
 
 const TodoBox: React.FC<ComponentProps> = ({id, title, order, done, setRefreshTodos, refreshTodos}) => {
     const navigate = useNavigate()
+    const token = BearerToken()
     const {finishTodo} = FetchTodos()
     const checkingTodo = async() => {
-        await finishTodo(id, done)
+        await finishTodo(id, done, token)
         setRefreshTodos(!refreshTodos)
     }
     return(
