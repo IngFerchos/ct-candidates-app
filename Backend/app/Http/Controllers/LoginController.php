@@ -24,7 +24,7 @@ class LoginController extends Controller
 
         $token = $user->createToken('password')->plainTextToken;
 
-        return response()->json(['token' => $token], 200);
+        return response()->json(['token' => $token, 'user' => $user], 200);
     }
     public function logout(Request $request)
     {
@@ -37,5 +37,13 @@ class LoginController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => "Logout"], 200);
+    }
+    public function isLogged(){
+        $user = Auth::guard('sanctum')->user();
+        if(!$user){
+            return response()->json(["message" => "token valido"],401);
+        };
+
+        return response()->json(["message" => "token valido"],200);
     }
 }

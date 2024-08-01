@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::get('/todos', [TodoController::class, 'findAll']);
-Route::get('/todos/{id}', [TodoController::class, 'findOne']);
-Route::post('/todos', [TodoController::class, 'create']);
-Route::patch('/todos/{id}', [TodoController::class, 'update']);
-Route::delete('/todos/{id}', [TodoController::class, 'delete']);
+Route::get('/todos', [TodoController::class, 'findAll'])->middleware('auth:sanctum');
+Route::get('/todos/{id}', [TodoController::class, 'findOne'])->middleware('auth:sanctum');
+Route::post('/todos', [TodoController::class, 'create'])->middleware('auth:sanctum');
+Route::patch('/todos/{id}', [TodoController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/todos/{id}', [TodoController::class, 'delete'])->middleware('auth:sanctum');

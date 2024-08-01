@@ -16,6 +16,6 @@ class Authenticate extends Middleware
     }
     protected function redirectTo(Request $request): ?string
     {
-        return null; // No redireccionar nunca
+        return null;
     }
 }
