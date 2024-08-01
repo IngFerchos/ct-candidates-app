@@ -1,0 +1,50 @@
+# For more information: https://laravel.com/docs/sail
+services:
+    laravel.test:
+        image: kytel0925/php:8.1-debian-apache-dev
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '80:80'
+        volumes:
+            - '.:/app'
+        networks:
+            - sail
+        depends_on:
+            - mysql
+    mysql:
+        image: 'mysql/mysql-server:8.0'
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '12345'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: 'ct_candidates_app'
+            MYSQL_USER: 'admin'
+            MYSQL_PASSWORD: '54321'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'sail-mysql:/var/lib/mysql'
+        networks:
+            - sail
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping"]
+            retries: 3
+            timeout: 5s
+    mailhog:
+        image: 'mailhog/mailhog:latest'
+        ports:
+            - '1025:1025'
+            - '8025:8025'
+        networks:
+            - sail
+networks:
+    sail:
+        driver: bridge
+volumes:
+    sail-mysql:
+        driver: local
+    sail-redis:
+        driver: local
+    sail-meilisearch:
+        driver: local
