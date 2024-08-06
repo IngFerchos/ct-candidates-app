@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    logger()->info('wtf');
-    
-    return view('welcome');
-});
+Route::get('/{any}', function () {
+    return view('welcome'); // Asegúrate de que esta vista apunte a tu aplicación Vue
+})->where('any', '.*');

@@ -49,4 +49,11 @@ class TaskController extends Controller
 
         return response()->noContent();
     }
+    
+    public function show(Task $task)
+    {
+        $this->authorize('view', $task);
+
+        return $task;
+    }
 }
