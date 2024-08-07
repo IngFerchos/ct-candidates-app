@@ -26,27 +26,14 @@ class TaskController extends Controller
         return view('tasks.index', compact('tasks'));
     }
 
+
+
+
+
+
     public function create()
     {
         return view('tasks.create');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required',
-            'order' => 'required|integer',
-        ]);
-
-        Task::create([
-            'title' => $request->title,
-            'order' => $request->order,
-            'completed' => $request->completed ?? false,
-            'user_id' => auth()->id(),
-        ]);
-
-        return redirect()->route('tasks.index')
-                        ->with('success', 'Task created successfully.');
     }
 
     public function show(Task $task)
@@ -57,6 +44,21 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         return view('tasks.edit', compact('task'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'order' => 'required|integer',
+        ]);
+
+        $task = new Task($request->all());
+        $task->user_id = auth()->id();
+        $task->save();
+
+        return redirect()->route('tasks.index')
+                        ->with('success', 'Task created successfully.');
     }
 
     public function update(Request $request, Task $task)
@@ -72,11 +74,13 @@ class TaskController extends Controller
                         ->with('success', 'Task updated successfully.');
     }
 
+
+
     public function destroy(Task $task)
     {
         $task->delete();
 
         return redirect()->route('tasks.index')
-                        ->with('success', 'Task deleted successfully.');
+                         ->with('success', 'Task deleted successfully.');
     }
 }
