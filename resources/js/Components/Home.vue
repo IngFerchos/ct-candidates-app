@@ -65,13 +65,11 @@ export default {
         },
         async logout() {
             try {
-                // Llama a la API para cerrar sesión si es necesario
+
                 await axios.post("/logout");
 
-                // Elimina el token de autenticación del almacenamiento local
                 localStorage.removeItem("token");
 
-                // Redirige al usuario a la página de login
                 this.$router.push("/login");
             } catch (error) {
                 console.error("Error during logout:", error);
@@ -84,7 +82,7 @@ export default {
 <style scoped>
 .v-navigation-drawer {
     width: 240px;
-    background-color: #1e1e2d; /* Dark background */
+    background-color: #1e1e2d;
 }
 
 .menu-item {
@@ -93,20 +91,20 @@ export default {
 }
 
 .menu-item:hover {
-    background-color: #2c3e50; /* Slightly lighter on hover */
+    background-color: #2c3e50;
 }
 
 .v-list-item-icon {
-    color: #ffffff; /* Light color for icons */
+    color: #ffffff; 
 }
 
 .v-list-item-title {
-    color: #ffffff; /* Light color for text */
+    color: #ffffff;
 }
 
 .v-app-bar {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    background-color: #3498db; /* Primary color */
+    background-color: #3498db;
 }
 
 .app-bar-title {
@@ -115,17 +113,17 @@ export default {
 }
 
 .logout-button {
-    background-color: #e74c3c; /* Red background for logout button */
-    color: #ffffff; /* Light color for text */
+    background-color: #e74c3c; 
+    color: #ffffff;
     border-radius: 4px;
     margin: 8px 0;
 }
 
 .logout-button:hover {
-    background-color: #c0392b; /* Darker red on hover */
+    background-color: #c0392b; 
 }
 
 .v-btn {
-    color: #ffffff; /* Light color for button icon */
+    color: #ffffff;
 }
 </style>

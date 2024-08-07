@@ -44,7 +44,7 @@
                                 : 'status-in-progress'
                         "
                     >
-                        {{ item.is_completed ? "Terminada" : "En curso" }}
+                        {{ item.is_completed ? "Finished" : "On Course" }}
                     </span>
                 </template>
                 <template v-slot:item.actions="{ item }">
@@ -77,7 +77,7 @@ export default {
             headers: [
                 { title: "Title", key: "title" },
                 { title: "Order", key: "order" },
-                { title: "Status", key: "is_completed" }, // Changed header title
+                { title: "Status", key: "is_completed" },
                 { title: "Actions", key: "actions", sortable: false },
             ],
 
@@ -141,7 +141,7 @@ export default {
 }
 
 .v-toolbar {
-    background-color: #2196f3; /* Primary color */
+    background-color: #2196f3;
 }
 
 .v-toolbar-title {
@@ -155,7 +155,7 @@ export default {
 }
 
 .search-field .v-input__slot {
-    color: #000000; /* Color for text inside the input */
+    color: #000000; 
 }
 
 .v-data-table {
@@ -164,8 +164,8 @@ export default {
 }
 
 .v-data-table .v-data-table-header th {
-    background-color: #e3f2fd; /* Light blue for header background */
-    color: #000000; /* Text color for header */
+    background-color: #e3f2fd; 
+    color: #000000; 
     font-weight: bold;
 }
 
@@ -186,10 +186,10 @@ export default {
 }
 
 .status-completed {
-    color: #4caf50; /* Green for completed */
+    color: #4caf50; 
 }
 
 .status-in-progress {
-    color: #ff9800; /* Orange for in progress */
+    color: #ff9800;
 }
 </style>

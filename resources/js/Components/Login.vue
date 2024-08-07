@@ -95,7 +95,7 @@ export default {
                 axios.defaults.headers.common[
                     "Authorization"
                 ] = `Bearer ${token}`;
-                this.$router.push("/home"); // Redirige al usuario a la página de inicio
+                this.$router.push("/home");
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     this.errorMessage = "Invalid credentials";
@@ -105,7 +105,7 @@ export default {
             }
         },
         goToRegister() {
-            this.$router.push("/register"); // Redirect user to the registration page
+            this.$router.push("/register");
         },
         togglePasswordVisibility() {
             this.showPassword = !this.showPassword;

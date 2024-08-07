@@ -119,13 +119,13 @@ export default {
                     password: this.password,
                     password_confirmation: this.confirmPassword,
                 });
-                this.$router.push("/login"); // Redirect user to the login page
+                this.$router.push("/login");
             } catch (error) {
                 this.errorMessage = "An error occurred";
             }
         },
         goToLogin() {
-            this.$router.push("/login"); // Redirect user to the login page
+            this.$router.push("/login");
         },
         togglePasswordVisibility() {
             this.show1 = !this.show1;

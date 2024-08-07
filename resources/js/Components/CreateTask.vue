@@ -66,7 +66,7 @@ export default {
                 } else {
                     await axios.post("/tasks", this.task);
                 }
-                this.$router.push("/home/view-tasks"); // Redirect to tasks list
+                this.$router.push("/home/view-tasks"); 
             } catch (error) {
                 console.error("Error saving task:", error);
             }
