@@ -1,6 +1,6 @@
 import APIService from "../../utils/Class/API";
 import { ICredentials } from "../../utils/Interfaces/ICredentials";
-import { login, logout } from "../slices/AuthSlice";
+import { setLogin, setLogout, setError } from "../slices/AuthSlice";
 import { AppDispatch } from "../store";
 
 export const loginUserByCredentials = (credentials: ICredentials) =>
@@ -12,11 +12,17 @@ export const loginUserByCredentials = (credentials: ICredentials) =>
                 const responseUser = await APIService.GetUserAuthByToken()
 
                 if (responseUser.ok) {
-                    dispatch(login(responseUser.response!));
+                    dispatch(setLogin(responseUser.response!));
+                } else {
+                    dispatch(setError(responseUser.error!!));
                 }
+            } else {
+                dispatch(setError(responseToken.error!!));
             }
         } catch (error) {
-            console.error('Login failed:', error);
+            console.log("fallo")
+            if (error instanceof Error)
+                dispatch(setError(error.message));
         }
     };
 
@@ -28,6 +34,11 @@ export const logOutAction = () =>
             console.error('Login failed:', error);
         } finally {
             APIService.setToken("")
-            dispatch(logout());
+            dispatch(setLogout());
         }
     };
+
+export const clearAuthError = () =>
+    async (dispatch: AppDispatch) => {
+        dispatch(setError(null))
+    }

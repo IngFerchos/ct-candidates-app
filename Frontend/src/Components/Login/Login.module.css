@@ -105,6 +105,9 @@
     background-color: #5a636d;
 }
 
+.error {
+    color: rgb(248, 76, 76);
+}
 
 @media (max-width: 768px) {
     .formContainer {

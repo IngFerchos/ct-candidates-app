@@ -3,7 +3,7 @@ import { ICredentials } from '../../utils/Interfaces/ICredentials'
 import style from './Login.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { RootState, useAppDispatch } from '../../Redux/store'
-import { loginUserByCredentials } from '../../Redux/actions/AuthActions'
+import { clearAuthError, loginUserByCredentials } from '../../Redux/actions/AuthActions'
 import { useSelector } from 'react-redux'
 
 export default function Login() {
@@ -15,15 +15,23 @@ export default function Login() {
 
     const navigate = useNavigate()
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+    const authError = useSelector((state: RootState) => state.auth.error);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     useEffect(() => {
         if (isAuthenticated) {
             navigate("/todos")
         }
+        setIsSubmitting(false)
     }, [dispatch, isAuthenticated])
+
+    useEffect(() => {
+        setIsSubmitting(false);
+    }, [authError])
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
+        setIsSubmitting(true);
         dispatch(loginUserByCredentials(credentials))
     }
     function handleOnChange(e: React.ChangeEvent<HTMLInputElement>, inputName: "email" | "password") {
@@ -33,6 +41,9 @@ export default function Login() {
                 ...credentials,
                 [inputName]: value
             })
+        if (authError) {
+            dispatch(clearAuthError())
+        }
     }
     return (
         <div className={style.container}>
@@ -50,6 +61,7 @@ export default function Login() {
                             onChange={(e) => handleOnChange(e, "email")}
                             autoComplete="email"
                             required
+                            disabled={isSubmitting}
                         />
                     </div>
 
@@ -63,16 +75,17 @@ export default function Login() {
                             onChange={(e) => handleOnChange(e, "password")}
                             autoComplete="current-password"
                             required
+                            disabled={isSubmitting}
                         />
                     </div>
 
                     <div className={style.actions}>
-                        <button type="submit" id="btnLogin" className={style.button}>Login</button>
+                        <button type="submit" id="btnLogin" disabled={isSubmitting} className={style.button}>Login</button>
                         <Link to="/Register" className={style.link}>
-                            <button type="button" id="btnRegister" className={`${style.button} ${style.secondaryButton}`}>Create Account</button>
+                            <button type="button" id="btnRegister" disabled={isSubmitting} className={`${style.button} ${style.secondaryButton}`}>Create Account</button>
                         </Link>
-
                     </div>
+                    {authError && <div className={style.error}>{authError}</div>}
                 </form>
             </main>
         </div>

@@ -14,7 +14,7 @@ class _APIService {
 
     constructor() {
 
-        this._backend_URL = "http://localhost:80/api";
+        this._backend_URL = import.meta.env.VITE_BACKEND_URL;
         this._logger = true;
     }
 

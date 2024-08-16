@@ -5,20 +5,26 @@ import { IUser } from '../../utils/Interfaces/IUser';
 export interface IAuthState {
     isAuthenticated: boolean,
     user: IUser | null,
+    error: string | null
 };
 const initialState: IAuthState = {
     isAuthenticated: false,
-    user: null
+    user: null,
+    error: null
 }
 const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        login: (state, action: PayloadAction<IUser>) => {
+        setLogin: (state, action: PayloadAction<IUser>) => {
             state.isAuthenticated = true;
             state.user = action.payload;
+            state.error = null
         },
-        logout: (state) => {
+        setError: (state, action: PayloadAction<string | null>) => {
+            state.error = action.payload
+        },
+        setLogout: (state) => {
             state.isAuthenticated = false;
             state.user = null;
         }
@@ -26,5 +32,5 @@ const authSlice = createSlice({
 
 })
 
-export const { login, logout } = authSlice.actions;
+export const { setLogin, setLogout, setError } = authSlice.actions;
 export default authSlice.reducer;
