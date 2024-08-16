@@ -9,7 +9,11 @@ The backend is built with Laravel and uses Docker for containerization.
 ```bash
     docker-compose up
 ```
-3. Run database migrations:
+3. Install Composer Dependencies
+```bash
+    docker-compose exec laravel.test composer install
+```
+4. Run database migrations:
 ```bash
     docker-compose exec laravel.test php artisan migrate
 ```
