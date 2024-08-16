@@ -1,0 +1,97 @@
+.container {
+    font-family: monospace;
+    padding: 20px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.h1 {
+    font-size: 2rem;
+    color: #c12424;
+    margin-bottom: 20px;
+}
+
+.filter {
+    align-items: center;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.btnSearch {
+    color: white;
+    background: rgb(45, 147, 255);
+    padding: 10px 15px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.btnSearch:hover {
+    background: rgb(0, 123, 255);
+}
+
+.label {
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+.select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+
+.btnCreate {
+    background-color: #209e53;
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    padding: 10px 15px;
+    width: 200px;
+    margin: 5px;
+}
+
+.btnCreate:hover {
+    background-color: #09843a;
+}
+
+.btnLogOut {
+    background-color: #ff4d4f;
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    padding: 10px 15px;
+    width: 200px;
+    margin: 5px;
+}
+
+.btnLogOut:hover {
+    background-color: #fc2428;
+}
+
+.btnSave {
+    background-color: #305dff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    padding: 10px 15px;
+    width: 200px;
+    margin: 5px;
+}
+
+.btnSave:hover {
+    background-color: #244ffc;
+}
