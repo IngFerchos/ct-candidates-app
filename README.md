@@ -27,6 +27,7 @@ We have our docker-compose.yml file to run into a Container.
 
 ## Front End Server
 
-Please run into a terminal for the front end server. To see the application made in this project.
+Please run into a terminal for the front end server. To see the application made in this project. Not in docker or with docker-composer.
+With CMD or ctrl+t in ubuntu. If you have node installed. Run in the terminal. Just for our React app
         $npm run dev
  
