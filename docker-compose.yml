@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # Servicio para el backend Laravel
+  # Backend service
   laravel.test:
     image: kytel0925/php:8.1-debian-apache-dev
     extra_hosts:
@@ -20,7 +20,7 @@ services:
     depends_on:
       - mysql
 
-  # Servicio para la base de datos MySQL
+  # Mysql service
   mysql:
     image: mysql:5.7
     container_name: mysql_db
@@ -35,7 +35,7 @@ services:
     networks:
       - app-network
 
-  # Servicio para el frontend React
+  # Front end service Not running at the moment
   react:
     build:
       context: .
@@ -48,7 +48,7 @@ services:
     networks:
       - app-network
 
-  # Servicio para Mailhog
+  # Mailhog service
   mailhog:
     image: mailhog/mailhog
     container_name: mailhog
