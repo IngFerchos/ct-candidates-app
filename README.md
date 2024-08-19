@@ -19,3 +19,15 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 - [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
+
+
+## Docker of Back end y DataBase
+
+We have our docker-compose.yml file to run into a Container. 
+
+## Front End Server
+
+Please run into a terminal for the front end server. To see the application made in this project. Not in docker or with docker-composer.
+With CMD or ctrl+t in ubuntu. If you have node installed. Run in the terminal. Just for our React app
+        $npm run dev
+ 
